@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input type="text" name="userName">
+<input type="button" value="存储值" id="save">
+<input type="button" value="获取值" id="get">
+<input type="button" value="删除值" id="remove">
+
+<script>
+
+    /*生命周期:
+    * 1.数据是存储在当前浏览器的硬盘空间--物理存储
+    * 2.除非拖动清除，否则永久存储在硬盘中
+    * 3.在当前浏览器的其它页面中也能访问到存储的内容
+    * 4.任何的其它的浏览器都无法访问*/
+    document.querySelector("#save").onclick=function(){
+        var name=document.querySelector('input').value;
+        /*第一个参数：key名称
+         * 第二个参数：值*/
+        window.localStorage.setItem('userName',name);
+    }
+
+    document.querySelector("#get").onclick=function(){
+        /*如果根据对应的key找不到对应的内容，则返回null*/
+        console.log(window.localStorage.getItem('userName'));
+    }
+
+    document.querySelector("#remove").onclick=function(){
+        console.log(window.localStorage.removeItem('userName'));
+    }
+</script>
+</body>
+</html>

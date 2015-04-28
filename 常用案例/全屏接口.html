@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        div{
+            width: 720px;
+            border: 1px solid #ccc;
+        }
+        #red {
+            width: 600px;
+            height: 300px;
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <div id="red"></div><br>
+    <input type="button" value="全屏" id="fullScreen">
+    <input type="button" value="退出全屏" id="cancelFullScreen">
+    <input type="button" value="判断是否全屏" id="isFullScreen">
+</div>
+<script>
+    var div=document.querySelector('div');
+    /*各个浏览器解析的标签和支持不一样，所以在使用一些接口的时候，需要添加各自的前缀
+    * google:webkit     firefox:moz    IE:ms   opera:o*/
+
+    document.querySelector('#fullScreen').onclick=function(){
+        /*能力测试：判断当前浏览器或者元素是否拥有某个成员*/
+        /*全屏标签的写法：requestFullScreen*/
+        //div.requestFullScreen();
+        //div.webkitRequestFullScreen();
+        //div.mozRequestFullScreen();
+        if(div.requestFullScreen){
+            div.requestFullScreen();
+        }
+        else if(div.webkitRequestFullScreen){
+            div.webkitRequestFullScreen();
+        }
+        else if(div.mozRequestFullScreen){
+            div.mozRequestFullScreen();
+        }
+        else if(div.msRequestFullscreen){
+            div.msRequestFullscreen();
+        }
+    }
+
+    /*退出全屏状态:不能让某一个元素退出，所以使用document调用 ，让整个文档退出全屏状态
+    * cancelFullScreen
+    * 添加前缀
+    * ie:exitFullscreen*/
+    document.querySelector('#cancelFullScreen').onclick=function(){
+        if(document.cancelFullScreen){
+            document.cancelFullScreen();
+        }
+        else if(document.webkitCancelFullScreen){
+            document.webkitCancelFullScreen();
+        }
+        else if(document.mozCancelFullScreen){
+            document.mozCancelFullScreen();
+        }
+        else if(document.msExitFullscreen){
+            document.msExitFullscreen();
+        }
+    }
+
+    /*判断是否是全屏状态*/
+    document.querySelector('#isFullScreen').onclick=function(){
+        /*判断标准写法：document.fullScreenElement*/
+        if(document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement){
+            alert('是全屏状态');
+        }
+        else{
+            alert('不是全屏状态');
+        }
+    }
+</script>
+</body>
+</html>

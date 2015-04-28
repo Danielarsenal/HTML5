@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input type="text" name="userName">
+<input type="button" value="存储值" id="save">
+<input type="button" value="获取值" id="get">
+<input type="button" value="删除值" id="remove">
+
+<script>
+
+    /*生命周期：
+    * 1.它是将数据存储在当前会话的内存中
+    * 2.意味着其它的会话不能进行访问的
+    * 3.会话刷新或者关闭当前会话，数据会自动清除
+    * 4.只有当前页面和会话中可以使用*/
+    document.querySelector("#save").onclick=function(){
+        var name=document.querySelector('input').value;
+        /*第一个参数：key名称
+        * 第二个参数：值*/
+        window.sessionStorage.setItem('userName',name);
+    }
+
+    document.querySelector("#get").onclick=function(){
+        console.log(window.sessionStorage.getItem('userName'));
+    }
+
+    document.querySelector("#remove").onclick=function(){
+        console.log(window.sessionStorage.removeItem('userName'));
+    }
+</script>
+</body>
+</html>
