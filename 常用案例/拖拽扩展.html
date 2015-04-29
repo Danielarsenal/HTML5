@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .div1,.div2,.div3{
+            width: 200px;
+            height: 200px;
+            border: 1px solid #ccc;
+            float: left;
+        }
+        p{
+            width: 80%;
+            height: 20px;
+            background-color: hotpink;
+        }
+        .div2,.div3{
+            margin-left:100px;
+        }
+    </style>
+</head>
+<body>
+<div class="div1" style="border-width: 10px" draggable="true">
+    <!--默认情况下，只有图片和超链接能够被拖拽
+    如果其它元素也想被拖拽，则需要添加一个属性：draggable="true"-->
+    <p draggable="true" id="p1">被拖拽的文本</p>
+    <p draggable="true" id="p2">我也是被拖拽的文本</p>
+    <a href="javascript:;" id="a">拖我吧</a>
+    <img src="../images/l1.jpg" id="img" width="40px" height="40px" alt="">
+</div>
+<div class="div2"></div>
+<div class="div3"></div>
+<script>
+    /*var obj=null;*/
+    /*e.target:就是当前事件捕获的目标元素*/
+    /*document:如果为document添加事件，那么在事件响应的时候就会进行事件的捕获来找到最合适响应事件的目标元素*/
+    document.ondragstart=function(e){
+        //console.log(e.target);
+        /*将当前被拖拽的元素存储在全局变量中*/
+        /*obj= e.target;*/
+        /*setData(类型，值)：类似键值对*/
+        /*类型：
+        * text/html
+        * text/uri-lis:图片和超链接*/
+        /*只能存储字符串 kind:string
+        * 类型其实你可以自定义*/
+        e.dataTransfer.setData("text/html", e.target.id);
+        console.log(e.dataTransfer.items[0]);
+    }
+
+    /*ondragover:被拖拽元素在目标元素上时持续触发*/
+    document.addEventListener('dragover',function(e){
+        /*浏览器默认是不允许将一个元素拖拽到另外一个元素中，所以默认情况下，drop事件不能被触发，如果想触发，必须在dragover中阻止浏览器的默认行为*/
+        e.preventDefault();
+    })
+    /*ondrop:当被拖拽元素在目标元素上松开鼠标时触发*/
+    document.addEventListener('drop',function(e){
+        /*console.log('drop');*/
+        //e.target.appendChild(obj);
+        var id= e.dataTransfer.getData('text/html');
+        console.log(id);
+        e.target.appendChild(document.getElementById(id));
+    })
+</script>
+</body>
+</html>

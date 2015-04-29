@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .div1,
+        .div2,
+        .div3 {
+            width: 200px;
+            height: 200px;
+            border: 1px solid #ccc;
+            float: left;
+        }
+
+        p {
+            width: 80%;
+            height: 20px;
+            background-color: hotpink;
+        }
+
+        .div2,
+        .div3 {
+            margin-left: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="div1">
+        <!--默认情况下，只有图片和超链接能够被拖拽
+    如果其它元素也想被拖拽，则需要添加一个属性：draggable="true"-->
+        <p draggable="true" id="p1">被拖拽的文本</p>
+        <p draggable="true" id="p2">我也是被拖拽的文本</p>
+    </div>
+    <div class="div2"></div>
+    <div class="div3"></div>
+    <script>
+        var obj = null;
+        //事件：当拖拽元素开始被拖拽的时候触发的事件，此事件作用在被拖曳元素上
+        document.ondragstart = function (e) {
+            // console.log(e.target);
+            obj = e.target;
+        }
+        //当拖拽元素被拖拽过程中持续触发的事件，此事件作用在被拖曳元素上
+        document.ondrag = function () {
+
+        }
+        //当拖拽完成后触发的事件，此事件作用在被拖曳元素上
+        document.ondragend = function () {
+
+        }
+        /*ondragleave:当拖拽当前元素离开元素自身范围时触发-以鼠标的位置做为参照*/
+        document.ondragleave = function () {
+
+        }
+        /*基于目标元素事件*/
+        /*当被拖拽元素进入到目标元素时触发--进入以鼠标做为参照*/
+        document.addEventListener('dragenter', function (e) {
+            // console.log(e.target);
+        })
+        /*ondragover:被拖拽元素在目标元素上时持续触发*/
+        document.addEventListener('dragover', function (e) {
+            /*浏览器默认是不允许将一个元素拖拽到另外一个元素中，所以默认情况下，drop事件不能被触发，如果想触发，必须在dragover中阻止浏览器的默认行为*/
+            e.preventDefault();
+            /*console.log('dragover');*/
+        })
+        /*ondragleave:当被拖拽元素离开目标元素时触发*/
+        document.addEventListener('dragleave', function () {
+            /*console.log('目标元素的：dragleave');*/
+        })
+        /*ondrop:当被拖拽元素在目标元素上松开鼠标时触发*/
+        document.addEventListener('drop', function (e) {
+            /*console.log('drop');*/
+            e.target.appendChild(obj);
+        })
+    </script>
+    
+</body>
+
+</html>
+</script>
+</body>
+
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    /*添加事件监听：addEventListener
+    * ononline:当电脑的网络从断开到连通时触发
+    * onoffline:当电脑的网络从连通到断开时触发*/
+//    window.addEventListener("事件名称"，回调, boolean);
+    window.addEventListener('online',function(){
+        console.log('网络连通了');
+    })
+    window.addEventListener('offline',function(){
+        console.log('网络断开了');
+    })
+</script>
+</body>
+</html>
