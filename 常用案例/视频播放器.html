@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../css/font-awesome.css">
+    <link rel="stylesheet" href="../css/css.css">
+</head>
+<body>
+<h3 class="playerTitle">视频播放器</h3>
+<div class="player">
+    <video src="../mp4/chrome.mp4"></video>
+    <div class="controls">
+        <a href="javascript:;" class="switch fa fa-play"></a>
+        <a href="javascript:;" class="expand fa fa-expand"></a>
+        <div class="progress">
+            <div class="bar"></div>
+            <div class="loaded"></div>
+            <div class="elapse"></div>
+        </div>
+        <div class="time">
+            <span class="currentTime">00:00:00</span>
+            \
+            <span class="totalTime">00:00:00</span>
+        </div>
+    </div>
+</div>
+<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script>
+    /*步骤：
+    * 1.捕获视频可以播放的时机:oncanplay
+    *   a.显示视频,将视频的display样式修改为block
+    *   b.获取当前视频的总时长，显示在对应的span中
+    * 2.实现播放
+    *   a.添加点击事件：修改样式，实现播放与暂停的切换
+    *   b.在播放的时候，获取当前已经播放的时长，显示在span中
+    * 3.实现跳播：
+    *   a.为bar绑定事件*/
+
+    $(function(){
+        /*1.获取当前video元素*/
+        var video=$("video")[0];
+
+        /*2.添加oncanplay事件的监听*/
+        video.oncanplay=function(){
+            setTimeout(function(){
+                /*2.1 设置当前video的display样式为block*/
+                $(video).css("display","block");
+                /*2.2 获取当前视频的总时长*/
+                var total=video.duration;
+                /*2.3 获取总时长中的时分秒
+                * 3700s
+                * 3700/(60*60)  1
+                * 3700%3600>>100/60  1
+                * 3700%60  40*/
+                /*var hour=Math.floor(total/3600);
+                hour=hour<10?"0"+hour:hour;
+                var minute=Math.floor(total%3600/60);
+                minute=minute<10?"0"+minute:minute;
+                var second=Math.floor(total%60);
+                second=second<10?"0"+second:second;*/
+                /*2.4 将总时长显示在span中*/
+                $(".totalTime").html(getTimeString(total));
+            },2000);
+        }
+
+        /*获取时长中的时分秒*/
+        function getTimeString(time){
+            var hour=Math.floor(time/3600);
+            hour=hour<10?"0"+hour:hour;
+            var minute=Math.floor(time%3600/60);
+            minute=minute<10?"0"+minute:minute;
+            var second=Math.floor(time%60);
+            second=second<10?"0"+second:second;
+            /*2.4 将总时长显示在span中*/
+            return hour + ":" + minute + ":" + second;
+        }
+
+        /*3.实现播放功能*/
+        $(".switch").on('click',function(){
+            if(video.paused){ //如果是暂停
+                /*让你播放*/
+                video.play();
+            }
+            else{
+                video.pause();
+            }
+            /*$(this).toggleClass('fa-play').toggleClass('fa-pause');*/
+            $(this).toggleClass('fa-play fa-pause');
+        });
+
+        /*4.监听视频的播放过程:当currentTime值改变的时候就会触发这个事件*/
+        video.ontimeupdate=function(){
+            console.log('你竟然调用了我');
+            /*4.1 获取当前视频播放的进度*/
+            var current=video.currentTime;
+            $('.currentTime').html(getTimeString(current));
+            /*4.2 获取当前已播放时长相对于总时长的比例*/
+            var percent=current / video.duration *100+"%";
+            /*4.3 设置样式*/
+            $(".elapse").css("width",percent);
+        }
+
+        /*5.实现跳播*/
+        $(".bar").on('click',function(e){
+            /*5.1 获取当前鼠标单击的位置*/
+            var offsetX= e.offsetX;
+            /*5.2 获取当前点击位置与总长度的比例值*/
+            var percent=offsetX / $(this).width();
+            /*5.3 获取当前单击位置对应的视频播放时间点*/
+            var currentT=percent * video.duration;
+            /*得到时间点后：
+            * 1.设置当前进度条的样式
+            * 2.将当前播放时间修改为当前时间点*/
+            video.currentTime=currentT;
+        });
+
+        /*6.视频播放完毕之后，重置播放状态*/
+        video.onended=function(){
+            video.currentTime=0;
+            $(".switch").toggleClass('fa-play fa-pause');
+        }
+
+        /*7.全屏*/
+        $(".expand").on('click',function(){
+            if(video.requestFullScreen){
+                video.requestFullScreen();
+            }
+            else if(video.webkitRequestFullScreen){
+                video.webkitRequestFullScreen();
+            }
+            else if(video.mozRequestFullScreen){
+                video.mozRequestFullScreen();
+            }
+            else if(video.msRequestFullscreen){
+                video.msRequestFullscreen();
+            }
+        });
+    });
+</script>
+</body>
+</html>
